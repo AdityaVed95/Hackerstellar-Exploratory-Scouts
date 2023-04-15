@@ -13,26 +13,52 @@
         <h1 class="text-light">Welcome to Investellar</h1>
         <p class="fs-5 text-light">"Your one stop destination for all investement options"</p>
             <form method="post" class="w-25">
+
                 <div class="mb-3 ">
-                    <label for="studentName" class="form-label text-light">NAME</label>
-                    <input type="text" class="form-control" name="studentName" placeholder="enter your name">
+                    <label for="investorName" class="form-label text-light">NAME</label>
+                    <input type="text" class="form-control" name="investorName" placeholder="enter your name">
                 </div>
+
                 <div class="mb-3 ">
-                    <label for="studentEmail" class="form-label text-light">Email</label>
-                    <input type="email" class="form-control" name="studentEmail" placeholder="enter your email">
+                    <label for="investorEmail" class="form-label text-light">Email</label>
+                    <input type="email" class="form-control" name="investorEmail" placeholder="enter your email">
                 </div>
+                
                 <div class="mb-3 ">
-                    <label for="studentCurrentSem" class="form-label text-light">Current Sem : </label>
-                    <input type="number" class="form-control" name="studentCurrentSem" placeholder="enter your current sem">
+                    <label for="investorPassword" class="form-label text-light">Password</label>
+                    <input type="password" class="form-control" name="investorPassword" placeholder="enter your password">
                 </div>
+                
                 <div class="mb-3 ">
-                    <label for="studentId" class="form-label text-light">Student ID (upto 50 characters)</label>
-                    <input type="text" class="form-control" name="studentId" placeholder="enter your student ID">
+                    <label for="investorAge" class="form-label text-light">Age</label>
+                    <input type="number" class="form-control" name="investorAge" placeholder="enter your age">
                 </div>
+
                 <div class="mb-3 ">
-                    <label for="studentPassword" class="form-label text-light">Password</label>
-                    <input type="password" class="form-control" name="studentPassword" placeholder="enter your password">
+                    <label for="investorBudget" class="form-label text-light">Budget</label>
+                    <input type="number" class="form-control" name="investorBudget" placeholder="enter your budget">
                 </div>
+
+                <div class="mb-3 ">
+                    <label for="investorMobileNo" class="form-label text-light">Mobile No</label>
+                    <input type="number" class="form-control" name="investorMobileNo" placeholder="enter your Mobile No">
+                </div>
+
+
+                <div class="mb-3 ">
+                    <label for="investorAddress" class="form-label text-light">Address</label>
+                    <input type="text" class="form-control" name="investorAddress" placeholder="enter your Address">
+                </div>
+                
+
+                <label for="">Choose Your Primary Investment Objective :  </label><br><br>
+                <input type="radio" name="investmentObjectiveId" value="1"> <label for="">Capital preservation</label>
+                <input type="radio" name="investmentObjectiveId" value="2"> <label for="">Income generation</label>
+                <input type="radio" name="investmentObjectiveId" value="3"> <label for="">Capital growth</label>
+                <input type="radio" name="investmentObjectiveId" value="4"> <label for="">Speculation</label>
+                <input type="radio" name="investmentObjectiveId" value="5"> <label for="">Socially responsible investing</label>
+
+
                 <button type="submit" class="btn btn-primary">SIGNUP</button>
             </form>
         </div>

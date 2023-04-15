@@ -4,8 +4,30 @@
     <h3>Explore the world of finance !!!</h3>
     <br>
     <div class="subjects d-flex flex-column">
-        <a href="{{url_for('explore_fxn')}}" class="btn options btn-light"> Exploratory Zone
-        </a>
+        <a href="{{url_for('explore_fxn')}}" class="btn options btn-light"> Exploratory Zone</a>
     </div>
 
+    <style>
+        h1{
+            font-size: 50px;
+            background-color: rgb(176, 247, 249);
+            text-align: center;
+            font-family: Georgia, serif;
+            border-bottom: 3px solid #796c47;
+            color: #4b3302;
+            height: 100px;
+        }
+        button {
+            font-size: 20px;
+            padding: 12px 24px;
+            width: 150px;
+        }
+        body{
+            background-image: url('../static/images/home.jpg');
+            background-repeat: no-repeat;
+            image-rendering: optimizeQuality;
+            background-size:cover;
+            color:rgb(0, 0, 0) ;
+        }
+    
 {% endblock %}

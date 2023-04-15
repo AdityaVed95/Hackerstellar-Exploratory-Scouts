@@ -5,7 +5,7 @@ def get_investment_options_details():
     connection = 0
     try:
         connection = psycopg2.connect(user="postgres",
-                                      password="pass",
+                                      password="navyanavya",
                                       host="127.0.0.1",
                                       port="5432",
                                       database="postgres",

@@ -2,12 +2,12 @@
 
 {% block content %}
 
-<h2>Select From the Below Investment Options :</h2>
+<h2>Below are few Investment Options :</h2>
 
 <ul>
     {% for investment in result %}
     <div class="subjects d-flex flex-column">
-        <a href="{{url_for('company_investment_details_fxn',companyId=companyId,investmentOptionId=investment[0])}}" class="btn options btn-light"> {{investment[1]}} <br> {{investment[2]}}
+        <a href="" class="btn options btn-light"> {{investment[1]}} <br> {{investment[2]}}
         </a>
     </div>
     <hr>

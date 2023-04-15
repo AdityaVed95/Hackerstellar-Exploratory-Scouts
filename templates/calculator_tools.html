@@ -1,0 +1,16 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+
+
+    {% for name in result %}
+        <div class="subjects d-flex flex-column">
+            <a href="{{name[1]}}" class="btn options btn-light"> {{name[0]}}
+            </a>
+        </div>
+        <hr>
+    {% endfor %}
+
+
+
+{% endblock %}

@@ -7,7 +7,7 @@
 
 -- )
 
-
+select * from customer
 CREATE TABLE customer(
 
 	customer_name varchar(200),
@@ -21,7 +21,7 @@ CREATE TABLE customer(
 -- 	month_and_year
 	customer_age int,
 -- 	fk_investment_objective_id varchar(200),
-	PRIMARY KEY(customer_email),
+	PRIMARY KEY(customer_email)
 -- 	FOREIGN KEY(fk_investment_objective_id) references investment_objective(objective_id)
 	
 )
@@ -30,8 +30,9 @@ CREATE TABLE customer(
 
 create table customer_budget(
 
-	fk_customer_email,
-	user_budget,
+	fk_customer_email varchar(200),
+	customer_budget_cost varchar(200) DEFAULT 0,
+	FOREIGN KEY (fk_customer_email) references customer(customer_email)
 
 )
 
@@ -47,18 +48,25 @@ create table customer_expense(
 CREATE TABLE company(
 
 	company_id varchar(200),
-	no_of_customers_investing int,
+-- 	no_of_customers_investing int,
 	company_name varchar(200),
-	fk_company_primary_investment_objective_id varchar(200),
-	company_industry varchar(200),
-	company_stock_price numeric,
-	company_revenue numeric,
-	company_profit numeric,
-	company_description_link varchar(200),
-	PRIMARY KEY(company_id),
-	FOREIGN KEY(fk_company_primary_investment_objective_id) references investment_objective(objective_id)
+	company_link varchar(200),
+-- 	fk_company_primary_investment_objective_id varchar(200),
+-- 	company_industry varchar(200),
+-- 	company_stock_price numeric,
+-- 	company_revenue numeric,
+-- 	company_profit numeric,
+-- 	company_description_link varchar(200),
+	PRIMARY KEY(company_id)
+-- 	FOREIGN KEY(fk_company_primary_investment_objective_id) references investment_objective(objective_id)
 
 	 
+)
+
+create table calculator_tools(
+
+	tool_name varchar(200),
+	tool_link varchar(200)
 )
 
 -- CREATE TABLE investor_company(

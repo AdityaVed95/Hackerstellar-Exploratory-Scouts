@@ -1,13 +1,7 @@
-# this fxn is useful when a user wishes to see the their personal
-# details on their profile page
-
-# this fxn returns 1 and the student details for the correct input and returns
-# 0 and the error in case of failed retreival of data
-
 import psycopg2
 
 
-def get_all_company_details():
+def get_budget_details(customerEmail):
     connection = 0
     try:
         connection = psycopg2.connect(user="postgres",
@@ -19,11 +13,11 @@ def get_all_company_details():
 
         cursor = connection.cursor()
 
-        postgreSQL_select_Query = "select * from company"
-        
+        postgreSQL_select_Query = "select customer_budget_cost from customer_budget where fk_customer_email ='" + customerEmail + "'"
+        # 'select * from sy_mp.student where student_id =id2'
         cursor.execute(postgreSQL_select_Query)
-        company_names = cursor.fetchall()
-        return company_names
+        budget = cursor.fetchall()
+        return budget[0][0]
 
 
     except (Exception, psycopg2.Error) as error:

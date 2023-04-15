@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, request, session, redirect , send_file
 from flask_session import Session
-from sql_queries import fetch_all_companies, fetch_customer_details, fetch_customer_pass_for_auth, insert_customer_details, fetch_investment_options
+from sql_queries import fetch_all_companies, fetch_customer_details, fetch_customer_pass_for_auth, insert_customer_details, fetch_investment_options, fetch_calculator_tools , create_budget_entry , fetch_budget
 
 app = Flask(__name__)
 
@@ -39,6 +39,9 @@ def login_fxn():
 def signup_fxn():
     if request.method == 'POST':
         result = insert_customer_details.insert_customer_into_db(request.form.get("customerName"), request.form.get("customerEmail"),request.form.get("customerMobileNo"),  request.form.get("customerAddress"),request.form.get("customerPassword"),  request.form.get("customerAge"))
+
+        if result[0] == 1:
+            create_budget_entry.insert_customer_into_db(request.form.get("customerEmail"))
 
         return render_template('signup_success_fail.html', result=result)
 
@@ -79,15 +82,43 @@ def profile_fxn():
     result = fetch_customer_details.get_customer_details(session.get("customerEmail"))
     return render_template("profile.html",result=result[0])
 
-@app.route('/home/<companyId>')
-def investment_option_fxn(companyId):
+@app.route('/home/investment_option')
+def investment_option_fxn():
     if not session.get("customerEmail"):
         return redirect("/welcome")
     result = fetch_investment_options.get_investment_options_details()
-    return render_template('investment_options.html',companyId=companyId,result=result)
+    return render_template('investment_options.html',result=result)
 
-@app.route('/home/<companyId>/<investmentOptionId>')
-def company_investment_details_fxn(companyId,investmentOptionId):
+# @app.route('/home/<companyId>/<investmentOptionId>')
+# def company_investment_details_fxn(companyId,investmentOptionId):
+#     if not session.get("customerEmail"):
+#         return redirect("/welcome")
+    
+@app.route('/home/calculator_tools')
+def calculator_tools_fxn():
     if not session.get("customerEmail"):
         return redirect("/welcome")
-    
+    result = fetch_calculator_tools.get_calculator_details()
+
+    return render_template('calculator_tools.html',result=result)
+
+@app.route('/home/budget_tracking', methods=['GET', 'POST'])
+def budget_tracking_fxn():
+
+
+    if not session.get("customerEmail"):
+        return redirect("/welcome")
+
+    if request.method == 'POST':
+        
+
+    budget = fetch_budget.get_budget_details(session.get("customerEmail"))
+    return render_template("budget_tracking.html",budget=budget)
+
+# @app.route("/home/edit_budget_tracking")
+# def edit_budget_fxn():
+#     if not session.get("customerEmail"):
+#         return redirect("/welcome")
+
+
+

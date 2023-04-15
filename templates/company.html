@@ -2,12 +2,22 @@
 
 {% block content %}
 
+    <h2>Learn About Various Investment Options : </h2>
+
+    <div class="subjects d-flex flex-column">
+        <a href="{{url_for('investment_option_fxn')}}" class="btn options btn-light"> Learn More
+        </a>
+    </div>
+
+
+
+
 <h2>Select From the Below Companies :</h2>
 
 <ul>
     {% for name in result %}
     <div class="subjects d-flex flex-column">
-        <a href="{{url_for('investment_option_fxn',companyId=name[1])}}" class="btn options btn-light"> {{name[0]}}
+        <a href="{{name[2]}}" class="btn options btn-light"> {{name[1]}}
         </a>
     </div>
     <hr>

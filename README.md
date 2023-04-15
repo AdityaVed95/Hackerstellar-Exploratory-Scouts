@@ -1,1 +1,1 @@
-# Hackerstellar-Hackathon-Sem4-Flask-Web-App
+# Hackerstellar-Exploratory-Scouts 

@@ -1,19 +1,49 @@
 {% extends "base_template.html" %}
 
 {% block content %}
+<div class="container">
+    <h1>Hello {{result[0]}}</h1>
 
-<h1>Hello {{result[0]}}</h1>
-
-<hr>
-<h3>Here's a brief overview of your profile : </h3>
-<br>
-<div>
-    <p>Registered Email ID : {{result[1]}}</p>
-    <p>Current Budget : {{result[2]}}</p>
-    <p>Total Investment Amount : {{result[3]}}</p>
-    <p>Registered Mobile No : {{result[4]}}</p>
-    <p>Address : {{result[5]}}</p>
-    <p>Age : {{resul}}</p>
+    <hr>
+    <h3>Here's a brief overview of your profile : </h3>
+    <br>
+    <div>
+        <p>Registered Email ID : {{result[1]}}</p>
+        <p>Current Budget : {{result[2]}}</p>
+        <p>Total Investment Amount : {{result[3]}}</p>
+        <p>Registered Mobile No : {{result[4]}}</p>
+        <p>Address : {{result[5]}}</p>
+        <p>Age : {{resul}}</p>
+    </div>
 </div>
+
+<style>
+    body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('../static/images/profile.png');
+        filter: brightness(0.5);
+        z-index: -1;
+    }
+    body{
+        background-image: url('../static/images/profile.png');
+        background-repeat: no-repeat;
+        image-rendering: optimizeQuality;
+        background-size:cover;
+        color:rgb(255, 255, 255) ;
+    }
+    container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+</style>
 
 {% endblock %}

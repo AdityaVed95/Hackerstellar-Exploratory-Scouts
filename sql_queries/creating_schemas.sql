@@ -28,8 +28,8 @@ CREATE TABLE companies(
 	company_id varchar(200),
 	no_of_customers_investing int,
 	company_name varchar(200),
-	PRIMARY KEY(company_id),
-	fk_company_primary_investment_objective_id varchar(200)
+	PRIMARY KEY(company_id)
+	fk_company_primary_investment_objective_id 
 	 
 )
 

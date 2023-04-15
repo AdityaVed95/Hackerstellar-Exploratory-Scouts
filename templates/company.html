@@ -1,0 +1,18 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+
+<h2>Select From the Below Companies :</h2>
+
+<ul>
+    {% for name in result %}
+    <div class="subjects d-flex flex-column">
+        <a href="{{url_for('investment_option_fxn',companyId=name[1])}}" class="btn options btn-light"> {{name[0]}}
+        </a>
+    </div>
+    <hr>
+    {% endfor %}
+
+</ul>
+
+{% endblock %}

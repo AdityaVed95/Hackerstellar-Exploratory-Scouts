@@ -7,7 +7,7 @@ import psycopg2
 #  0, error if it was not successful
 
 
-def insert_investor_into_db(investorName,investorEmail,investorPassword,investorBudget,investorMobileNo,investorAddress,investorAge,investmentObjectiveId):
+def insert_customer_into_db(customerName, customerEmail, customerMobileNo, customerAddress, customerPassword, customerAge):
     connection = 0
     try:
         connection = psycopg2.connect(user="postgres",
@@ -21,12 +21,12 @@ def insert_investor_into_db(investorName,investorEmail,investorPassword,investor
 
         postgreSQL_insert_Query = """
         
-        insert into investor 
-        values(%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        insert into customer 
+        values(%s,%s,%s,%s,%s,%s)
 
         """
 
-        record_to_insert = (investorName, investorEmail,int(investorBudget),0,investorMobileNo,investorAddress,investorPassword,int(investorAge),investmentObjectiveId)
+        record_to_insert = (customerName,customerEmail,customerMobileNo,customerAddress,customerPassword,int(customerAge))
 
         cursor.execute(postgreSQL_insert_Query,record_to_insert)
         

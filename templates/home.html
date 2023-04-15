@@ -1,7 +1,11 @@
 {% extends 'base_template.html' %}
 
 {% block content %}
-
-<h1>Welcome Home</h1>
+    <h3>Explore the world of finance !!!</h3>
+    <br>
+    <div class="subjects d-flex flex-column">
+        <a href="{{url_for('explore_fxn')}}" class="btn options btn-light"> Exploratory Zone
+        </a>
+    </div>
 
 {% endblock %}

@@ -7,7 +7,7 @@
 import psycopg2
 
 
-def get_investor_details(investorEmail):
+def get_all_company_details():
     connection = 0
     try:
         connection = psycopg2.connect(user="postgres",
@@ -19,15 +19,15 @@ def get_investor_details(investorEmail):
 
         cursor = connection.cursor()
 
-        postgreSQL_select_Query = "select investor_password from investor where investor_email ='" + investorEmail + "'"
-        # 'select * from sy_mp.student where student_id =id2'
+        postgreSQL_select_Query = "select company_name,company_id from company"
+        
         cursor.execute(postgreSQL_select_Query)
-        student_details = cursor.fetchall()
-        return 1, student_details
+        company_names = cursor.fetchall()
+        return company_names
 
 
     except (Exception, psycopg2.Error) as error:
-        return (0, "Error while fetching data from PostgreSQL " + str(error))
+        return "Error while fetching data from PostgreSQL " + str(error)
 
     finally:
         # closing database connection.

@@ -2,6 +2,18 @@
 
 {% block content %}
 
-<h1>Hello Investor</h1>
+<h1>Hello {{result[0]}}</h1>
+
+<hr>
+<h3>Here's a brief overview of your profile : </h3>
+<br>
+<div>
+    <p>Registered Email ID : {{result[1]}}</p>
+    <p>Current Budget : {{result[2]}}</p>
+    <p>Total Investment Amount : {{result[3]}}</p>
+    <p>Registered Mobile No : {{result[4]}}</p>
+    <p>Address : {{result[5]}}</p>
+    <p>Age : {{resul}}</p>
+</div>
 
 {% endblock %}

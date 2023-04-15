@@ -91,3 +91,5 @@ def company_investment_details_fxn(companyId,investmentOptionId):
     if not session.get("customerEmail"):
         return redirect("/welcome")
     
+if __name__ == "__main__":
+    app.run(debug=True)

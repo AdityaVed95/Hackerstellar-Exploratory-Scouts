@@ -7,7 +7,7 @@
 import psycopg2
 
 
-def get_student_details(investorEmail):
+def get_investor_details(investorEmail):
     connection = 0
     try:
         connection = psycopg2.connect(user="postgres",

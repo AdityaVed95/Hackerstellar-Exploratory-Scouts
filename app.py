@@ -16,12 +16,12 @@ def welcome_fxn():
 @app.route('/login', methods=['GET', 'POST'])
 def login_fxn():
     if request.method == 'POST':
-        result = fetch_student_details.get_student_details(request.form.get("studentId"))
+        result = fetch_investor_details.get_investor_details(request.form.get("investorEmail"))
         # successful authentication
         if result[0] == 1:
 
-            if(result[1][0][3]==request.form.get("studentPassword")):
-                session["studentId"] = request.form.get("studentId")
+            if(result[1][0][0]==request.form.get("investorPassword")):
+                session["investorEmail"] = request.form.get("investorEmail")
                 return redirect(url_for('home_fxn'))
             
             else:
@@ -39,6 +39,7 @@ def login_fxn():
 def signup_fxn():
     if request.method == 'POST':
         result = insert_investor_details.insert_investor_into_db(request.form.get("investorName"),request.form.get("investorEmail"),request.form.get("investorPassword"),request.form.get("investorBudget"),request.form.get("investorMobileNo"),request.form.get("investorAddress"),request.form.get("investorAge"),request.form.get("investmentObjectiveId"))                    
+
         return render_template('signup_success_fail.html', result=result)
 
     else:
@@ -47,5 +48,20 @@ def signup_fxn():
 
 @app.route("/logout")
 def logout_fxn():
-    session["studentId"] = None
+    session["investorEmail"] = None
     return redirect("/welcome")
+
+@app.route("/home")
+def home_fxn():
+    if not session.get("investorEmail"):
+        return redirect("/welcome")
+
+    return render_template("home.html")
+
+@app.route("/home/contact")
+def contact_fxn():
+    return render_template("contact.html")
+
+@app.route('/home/profile')
+def profile_fxn():
+    return render_template("profile.html")

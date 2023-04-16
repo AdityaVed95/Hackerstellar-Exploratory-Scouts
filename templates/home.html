@@ -1,6 +1,15 @@
 {% extends 'base_template.html' %}
 
 {% block content %}
+    <br>
+
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <br>
     <h3>Explore the world of finance !!!</h3>
     <br>
     <div class="subjects d-flex flex-column">
@@ -24,6 +33,12 @@
 
     <hr>
 
+    <div class="subjects d-flex flex-column">
+        <a href="{{url_for('expense_tracking_fxn')}}" class="btn options btn-light"> Expense Tracking
+        </a>
+    </div>
+
+    <hr>
 
 
 

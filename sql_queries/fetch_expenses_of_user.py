@@ -1,7 +1,6 @@
 import psycopg2
 
-def update_budget_prg(customerEmail,newBudget):
-    connection = None
+def get_customer_expenses(customerEmail):
     try:
         connection = psycopg2.connect(user="postgres",
                                       password="pass",
@@ -11,14 +10,16 @@ def update_budget_prg(customerEmail,newBudget):
 
         cursor = connection.cursor()
 
-        # Update single record now
-        sql_update_query = """Update customer_budget set customer_budget_cost = %s where fk_customer_email = %s"""
-        cursor.execute(sql_update_query, (newBudget, customerEmail))
+        # Execute the query
+        cursor.execute("SELECT expense_name, expense_type, expense_cost FROM customer_expense WHERE fk_customer_email=%s;", (customerEmail,))
 
-        connection.commit()
+        # Fetch all rows
+        rows = cursor.fetchall()
+
+        return rows
 
     except (Exception, psycopg2.Error) as error:
-        print("Error in update operation", error)
+        print("Error in fetching customer expenses", error)
 
     finally:
         # closing database connection.

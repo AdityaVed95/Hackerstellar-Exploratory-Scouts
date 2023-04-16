@@ -1,0 +1,24 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+    <br>
+    <h2>Fill in the Details of your Expense :</h2>
+    <form method="POST" class="w-25">
+
+        <label>Enter Expense Name : </label>
+        <input type="text" name="expenseName" value="">
+        <br><br>
+
+        <label>Enter Expense Type : </label>
+        <label> (0 for non-renewable and 1 for renewable) </label>
+        <input type="text" name="expenseType" value="">
+        <br><br>
+
+        <label>Enter Expense Cost : </label>
+        <input type="number" name="expenseCost" value=""><br><br>
+
+        <button type="submit" class="btn btn-primary">ADD EXPENSE</button>
+
+    </form>
+
+{% endblock %}

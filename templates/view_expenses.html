@@ -1,0 +1,40 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+
+
+
+    <div class="mt-4 text-center">
+        <h3 class="text-dark">You are one step Closer to perfecting your expenses </h3>
+    <br>
+{#        {% for expense in result %}#}
+{#            <div class="resources d-flex flex-column mt-4">#}
+{#                <a href="{{url_for('course_fxn',year=year,dept_name=dept_name,subject_name = subject_name)}}" class="btn options btn-light" >Reference Links to Online Courses✈️</a>#}
+{#            </div>#}
+{#        {% endfor %}#}
+        <table style="width:100%">
+            <tr>
+                <th>Expense Name</th>
+                <th>Expense Type</th>
+                <th>Expense Cost</th>
+            </tr>
+            {% for expense in result %}
+            <tr>
+                <td>{{ expense[0] }}</td>
+                <td>{{ expense[1] }}</td>
+                <td>{{ expense[2] }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+
+    <br>
+    <h4>Total Expense  : {{ totalExpense }}</h4>
+    <br>
+    <h4>Budget Balance : {{ budgetBalance }}</h4>
+
+    </div>
+
+
+
+{% endblock %}

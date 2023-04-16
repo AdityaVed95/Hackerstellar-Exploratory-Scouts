@@ -1,7 +1,6 @@
 import psycopg2
 
-def update_budget_prg(customerEmail,newBudget):
-    connection = None
+def insert_customer_expense(customer_email, expense_name, expense_type, expense_cost):
     try:
         connection = psycopg2.connect(user="postgres",
                                       password="pass",
@@ -11,14 +10,16 @@ def update_budget_prg(customerEmail,newBudget):
 
         cursor = connection.cursor()
 
-        # Update single record now
-        sql_update_query = """Update customer_budget set customer_budget_cost = %s where fk_customer_email = %s"""
-        cursor.execute(sql_update_query, (newBudget, customerEmail))
+        # Execute the query with parameters
+        cursor.execute("INSERT INTO customer_expense (fk_customer_email, expense_name, expense_type, expense_cost) VALUES (%s, %s, %s, %s);", (customer_email, expense_name, expense_type, expense_cost))
 
+        # Commit the transaction
         connection.commit()
 
+        print("Expense added successfully.")
+
     except (Exception, psycopg2.Error) as error:
-        print("Error in update operation", error)
+        print("Error in inserting customer expense", error)
 
     finally:
         # closing database connection.
@@ -26,5 +27,3 @@ def update_budget_prg(customerEmail,newBudget):
             cursor.close()
             connection.close()
             print("PostgreSQL connection is closed")
-
-

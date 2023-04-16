@@ -1,6 +1,8 @@
-from flask import Flask, render_template, url_for, request, session, redirect , send_file
+import decimal
+
+from flask import Flask, render_template, url_for, request, session, redirect , send_file , flash
 from flask_session import Session
-from sql_queries import fetch_all_companies, fetch_customer_details, fetch_customer_pass_for_auth, insert_customer_details, fetch_investment_options, fetch_calculator_tools , create_budget_entry , fetch_budget
+from sql_queries import fetch_all_companies, fetch_customer_details, fetch_customer_pass_for_auth, insert_customer_details, fetch_investment_options, fetch_calculator_tools , create_budget_entry , fetch_budget, update_budget, get_count_expense, fetch_total_expense_cost,fetch_expenses_of_user,insert_expense,delete_expense
 
 app = Flask(__name__)
 
@@ -110,7 +112,31 @@ def budget_tracking_fxn():
         return redirect("/welcome")
 
     if request.method == 'POST':
-        
+
+        count = get_count_expense.get_count_customer_expense(session.get("customerEmail"))
+        # count is zero means there are no expenses till now
+        if count == 0:
+            # give a flash message of budget getting updated in the home page
+
+            flash("Your budget has been successfully updated !!! 😇")
+            update_budget.update_budget_prg(session.get("customerEmail"),request.form.get("budgetCost"))
+            return redirect(url_for("home_fxn"))
+        else:
+
+            totalExpense = fetch_total_expense_cost.get_total_expense_cost(session.get("customerEmail"))
+            if int(request.form.get("budgetCost")) >= totalExpense:
+                flash("Your budget has been successfully updated !!! 😇")
+                update_budget.update_budget_prg(session.get("customerEmail"),request.form.get("budgetCost"))
+                return redirect(url_for("home_fxn"))
+
+            else:
+
+                flash("New Budget is lower than your current expense , please try again later 🥲")
+                return redirect(url_for("home_fxn"))
+
+
+
+
 
     budget = fetch_budget.get_budget_details(session.get("customerEmail"))
     return render_template("budget_tracking.html",budget=budget)
@@ -120,5 +146,78 @@ def budget_tracking_fxn():
 #     if not session.get("customerEmail"):
 #         return redirect("/welcome")
 
+
+@app.route("/home/expense_tracking")
+def expense_tracking_fxn():
+    if not session.get("customerEmail"):
+        return redirect("/welcome")
+
+    return render_template('expense_tracking.html')
+
+@app.route("/home/expense_tracking/view_expenses")
+def view_expenses_fxn():
+    if not session.get("customerEmail"):
+        return redirect("/welcome")
+
+    result = fetch_expenses_of_user.get_customer_expenses(session.get("customerEmail"))
+    totalExpense = fetch_total_expense_cost.get_total_expense_cost(session.get("customerEmail"))
+    budget = fetch_budget.get_budget_details(session.get("customerEmail"))
+    budgetBalance = budget-totalExpense
+    return render_template('view_expenses.html',result=result,totalExpense=totalExpense,budgetBalance=budgetBalance)
+
+@app.route("/home/expense_tracking/add_new_expenses",methods=['GET', 'POST'])
+def add_new_expenses_fxn():
+    if not session.get("customerEmail"):
+        return redirect("/welcome")
+
+    if request.method == 'POST':
+        budget = fetch_budget.get_budget_details(session.get("customerEmail"))
+        totalExpense = fetch_total_expense_cost.get_total_expense_cost(session.get("customerEmail"))
+
+        if decimal.Decimal(totalExpense+decimal.Decimal((request.form.get("expenseCost")))) > decimal.Decimal(budget):
+            # flash message displayed in expense_tracking.html that on adding new expense, the budget will excede
+            flash("Unable to add the given expense in your list as total expense is exceeding your budget 😅")
+            return redirect(url_for('expense_tracking_fxn'))
+
+        else:
+            insert_expense.insert_customer_expense(session.get("customerEmail"),request.form.get('expenseName'),request.form.get('expenseType'),request.form.get('expenseCost'))
+    #         flash message displaying that successfully inserted
+            flash("Expense has been successfully updated !!! 💵")
+            return redirect(url_for('expense_tracking_fxn'))
+
+
+
+    totalExpense = fetch_total_expense_cost.get_total_expense_cost(session.get("customerEmail"))
+    budget = fetch_budget.get_budget_details(session.get("customerEmail"))
+    if totalExpense == budget:
+        # give a flash message on the expense_tracking.html that the budget is already equal to the expense
+        flash("Unable to add the given expense in your list as your total expense is equal to your budget !!! 😅 ")
+        return render_template(url_for('expense_tracking_fxn'))
+
+    return render_template('add_new_expenses.html')
+
+@app.route('/home/expense_tracking/remove_expense', methods=['GET', 'POST'])
+def remove_expense_fxn():
+    if request.method == "POST":
+        result = fetch_expenses_of_user.get_customer_expenses(session.get("customerEmail"))
+        list_of_expense_names = []
+        for expense in result:
+            list_of_expense_names.append(expense[0])
+
+        if request.form.get("expenseName") in list_of_expense_names:
+            flash("Expense Successfully Deleted")
+            delete_expense.delete_expense_prg(session.get("customerEmail"), request.form.get("expenseName"))
+
+        else:
+            flash("Given Expense Name does not exist in your Expenses List !!!")
+
+        return redirect(url_for('expense_tracking_fxn'))
+
+    count = get_count_expense.get_count_customer_expense(session.get("customerEmail"))
+    if count == 0:
+        flash("You Don't have any Expenses to be deleted !!!")
+        return redirect(url_for('expense_tracking_fxn'))
+
+    return render_template('remove_expense.html')
 
 

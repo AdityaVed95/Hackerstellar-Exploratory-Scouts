@@ -2,18 +2,24 @@
 
 {% block content %}
 
-<h1>Hello {{result[0]}}</h1>
+    <br>
 
-<hr>
-<h3>Here's a brief overview of your profile : </h3>
 <br>
-<div>
-    <p>Registered Email ID : {{result[1]}}</p>
-    <p>Current Budget : {{result[2]}}</p>
-    <p>Total Investment Amount : {{result[3]}}</p>
-    <p>Registered Mobile No : {{result[4]}}</p>
-    <p>Address : {{result[5]}}</p>
-    <p>Age : {{resul}}</p>
-</div>
+
+    <div class="mt-4 text-center">
+        <h3>Here's a brief overview of your profile : </h3>
+        <br>
+
+        <p>Name : {{result[0]}}</p>
+        <hr>
+        <p>Registered Email : {{result[1]}}</p>
+        <hr>
+        <p>Registered Mobile No  : {{result[2]}}</p>
+        <hr>
+        <p>Address : {{result[3]}}</p>
+        <hr>
+        <p>Age : {{result[5]}}</p>
+        <hr>
+    </div>
 
 {% endblock %}

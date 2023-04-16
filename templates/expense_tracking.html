@@ -1,0 +1,25 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+    <br>
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <br>
+    <a href="{{url_for('view_expenses_fxn')}}">Click Here to View Your Expenses</a>
+    <br>
+    <hr>
+    <br>
+    <a href="{{ url_for('add_new_expenses_fxn') }}">Click Here to Add new Expenses</a>
+    <br>
+    <hr>
+    <br>
+    <a href="{{ url_for('remove_expense_fxn')  }}">Click Here to Remove an Expense</a>
+
+
+
+
+{% endblock %}

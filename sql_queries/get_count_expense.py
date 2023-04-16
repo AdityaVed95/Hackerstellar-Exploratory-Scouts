@@ -1,7 +1,6 @@
 import psycopg2
 
-def update_budget_prg(customerEmail,newBudget):
-    connection = None
+def get_count_customer_expense(customer_email):
     try:
         connection = psycopg2.connect(user="postgres",
                                       password="pass",
@@ -11,14 +10,16 @@ def update_budget_prg(customerEmail,newBudget):
 
         cursor = connection.cursor()
 
-        # Update single record now
-        sql_update_query = """Update customer_budget set customer_budget_cost = %s where fk_customer_email = %s"""
-        cursor.execute(sql_update_query, (newBudget, customerEmail))
+        # Execute the query
+        cursor.execute("SELECT COUNT(*) FROM (SELECT fk_customer_email FROM customer_expense WHERE fk_customer_email=%s) AS count_table;", (customer_email,))
 
-        connection.commit()
+        # Fetch result
+        count = cursor.fetchone()[0]
+
+        return count
 
     except (Exception, psycopg2.Error) as error:
-        print("Error in update operation", error)
+        print("Error in fetching count", error)
 
     finally:
         # closing database connection.
@@ -27,4 +28,6 @@ def update_budget_prg(customerEmail,newBudget):
             connection.close()
             print("PostgreSQL connection is closed")
 
-
+# Example usage
+count = get_count_customer_expense('e1@gmail.com')
+print(count)

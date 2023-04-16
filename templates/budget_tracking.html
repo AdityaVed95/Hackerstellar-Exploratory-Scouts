@@ -9,14 +9,17 @@
     <h3>Want to Edit your Budget ???</h3>
     <br>
 
-    <label>Enter new Budget Cost Here</label>
-    <input type="number" name="budget_cost" value="">
-    <br><br>
+    <form method="post" class="w-25">
 
-    <input type="submit">
+        <div class="mb-3 ">
+            <label for="budgetCost" class="form-label text-light">Budget Cost</label>
+            <input type="text" class="form-control" name="budgetCost" placeholder="enter your budget">
+        </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
 
 
-
+    </form>
 
 
 {% endblock %}

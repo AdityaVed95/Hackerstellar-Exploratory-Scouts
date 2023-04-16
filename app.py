@@ -2,7 +2,7 @@ import decimal
 
 from flask import Flask, render_template, url_for, request, session, redirect , send_file , flash
 from flask_session import Session
-from sql_queries import fetch_all_companies, fetch_customer_details, fetch_customer_pass_for_auth, insert_customer_details, fetch_investment_options, fetch_calculator_tools , create_budget_entry , fetch_budget, update_budget, get_count_expense, fetch_total_expense_cost,fetch_expenses_of_user,insert_expense,delete_expense
+from sql_queries import fetch_all_companies, fetch_customer_details, fetch_customer_pass_for_auth, insert_customer_details, fetch_investment_options, fetch_calculator_tools , create_budget_entry , fetch_budget, update_budget, get_count_expense, fetch_total_expense_cost,fetch_expenses_of_user,insert_expense,delete_expense , remove_all_expenses_prg
 
 app = Flask(__name__)
 
@@ -159,6 +159,11 @@ def view_expenses_fxn():
     if not session.get("customerEmail"):
         return redirect("/welcome")
 
+    count = get_count_expense.get_count_customer_expense(session.get("customerEmail"))
+    if count == 0:
+        flash("You Don't have any Expenses to be Viewed !!!")
+        return redirect(url_for('expense_tracking_fxn'))
+
     result = fetch_expenses_of_user.get_customer_expenses(session.get("customerEmail"))
     totalExpense = fetch_total_expense_cost.get_total_expense_cost(session.get("customerEmail"))
     budget = fetch_budget.get_budget_details(session.get("customerEmail"))
@@ -171,8 +176,32 @@ def add_new_expenses_fxn():
         return redirect("/welcome")
 
     if request.method == 'POST':
+
+
+        result = fetch_expenses_of_user.get_customer_expenses(session.get("customerEmail"))
+        list_of_expense_names = []
+        for expense in result:
+            list_of_expense_names.append(expense[0])
+
+        if request.form.get("expenseName") in list_of_expense_names:
+            flash("The given expense already exists !!!")
+            return redirect(url_for('expense_tracking_fxn'))
+
         budget = fetch_budget.get_budget_details(session.get("customerEmail"))
         totalExpense = fetch_total_expense_cost.get_total_expense_cost(session.get("customerEmail"))
+        count = get_count_expense.get_count_customer_expense(session.get("customerEmail"))
+
+        if count == 0:
+            if float(request.form.get("expenseCost")) > float(budget):
+                # flash message displayed in expense_tracking.html that on adding new expense, the budget will excede
+                flash("Unable to add the given expense in your list as total expense is exceeding your budget 😅")
+                return redirect(url_for('expense_tracking_fxn'))
+
+            else:
+                insert_expense.insert_customer_expense(session.get("customerEmail"),request.form.get('expenseName'),request.form.get('expenseType'),request.form.get('expenseCost'))
+                #         flash message displaying that successfully inserted
+                flash("Expense has been successfully updated !!! 💵")
+                return redirect(url_for('expense_tracking_fxn'))
 
         if decimal.Decimal(totalExpense+decimal.Decimal((request.form.get("expenseCost")))) > decimal.Decimal(budget):
             # flash message displayed in expense_tracking.html that on adding new expense, the budget will excede
@@ -198,6 +227,9 @@ def add_new_expenses_fxn():
 
 @app.route('/home/expense_tracking/remove_expense', methods=['GET', 'POST'])
 def remove_expense_fxn():
+    if not session.get("customerEmail"):
+        return redirect("/welcome")
+
     if request.method == "POST":
         result = fetch_expenses_of_user.get_customer_expenses(session.get("customerEmail"))
         list_of_expense_names = []
@@ -220,4 +252,12 @@ def remove_expense_fxn():
 
     return render_template('remove_expense.html')
 
+@app.route('/home/expense_tracking/remove_all_expenses')
+def remove_all_expenses_fxn():
+    if not session.get("customerEmail"):
+        return redirect("/welcome")
+
+    remove_all_expenses_prg.remove_all_responses_from_db_for_given_customerEmail(session.get("customerEmail"))
+    flash('All your Expenses have been successfully deleted !!!')
+    return redirect(url_for('expense_tracking_fxn'))
 

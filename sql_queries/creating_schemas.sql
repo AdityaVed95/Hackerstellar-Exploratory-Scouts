@@ -26,24 +26,34 @@ CREATE TABLE customer(
 	
 )
 
+select * from customer
 
-
+select * from customer_budget
 create table customer_budget(
 
 	fk_customer_email varchar(200),
-	customer_budget_cost varchar(200) DEFAULT 0,
+	customer_budget_cost int DEFAULT 0,
 	FOREIGN KEY (fk_customer_email) references customer(customer_email)
 
 )
+insert into customer_budget values('e1@gmail.com',100)
+Update customer_budget set customer_budget_cost = 200 where fk_customer_email = 'e1@gmail.com'
 
 create table customer_expense(
 
-	fk_customer_email,
-	expense_name,
+	fk_customer_email varchar(200),
+	expense_name varchar(200),
 	expense_type int, -- 0 for non renewable and 1 for renewable 
-	expense_cost,
+	expense_cost numeric,
+	primary key (fk_customer_email,expense_name)
 	
 )
+
+select count(*) from (select fk_customer_email from customer_expense where fk_customer_email='e1@gmail.com')
+
+insert into customer_expense values('e1@gmail.com','clothing',1,500),('e1@gmail.com','grocery',0,494);
+
+select sum(expense_cost) from customer_expense where fk_customer_email=''
 
 CREATE TABLE company(
 

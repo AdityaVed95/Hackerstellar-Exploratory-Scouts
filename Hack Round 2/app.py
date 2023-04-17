@@ -1,8 +1,9 @@
 import decimal
 
-from flask import Flask, render_template, url_for, request, session, redirect , send_file , flash
+from flask import Flask, render_template, url_for, request, session, redirect , flash
 from flask_session import Session
-from sql_queries import fetch_all_companies, fetch_customer_details, fetch_customer_pass_for_auth, insert_customer_details, fetch_investment_options, fetch_calculator_tools , create_budget_entry , fetch_budget, update_budget, get_count_expense, fetch_total_expense_cost,fetch_expenses_of_user,insert_expense,delete_expense , remove_all_expenses_prg, fetch_all_registerd_users, calculate_expense_by_budget_ratio
+from sql_queries import fetch_all_companies, fetch_customer_details, fetch_customer_pass_for_auth, insert_customer_details, fetch_investment_options, fetch_calculator_tools , create_budget_entry , fetch_budget, update_budget, get_count_expense, fetch_total_expense_cost,fetch_expenses_of_user,insert_expense,delete_expense , remove_all_expenses_prg, \
+    calculate_expense_by_budget_ratio
 
 app = Flask(__name__)
 
@@ -40,7 +41,7 @@ def login_fxn():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup_fxn():
     if request.method == 'POST':
-        result = insert_customer_details.insert_customer_into_db(request.form.get("customerName"), request.form.get("customerEmail"),request.form.get("customerMobileNo"),  request.form.get("customerAddress"),request.form.get("customerPassword"),  request.form.get("customerAge"))
+        result = insert_customer_details.insert_customer_into_db(request.form.get("customerName"), request.form.get("customerEmail"), request.form.get("customerMobileNo"), request.form.get("customerAddress"), request.form.get("customerPassword"), request.form.get("customerAge"))
 
         if result[0] == 1:
             create_budget_entry.insert_customer_into_db(request.form.get("customerEmail"))
@@ -74,8 +75,6 @@ def explore_fxn():
     if not session.get("customerEmail"):
         return redirect("/welcome")
 
-
-    flash("")
     result = fetch_all_companies.get_all_company_details()
     return render_template("company.html", result=result)
 
@@ -90,14 +89,14 @@ def profile_fxn():
     if not session.get("customerEmail"):
         return redirect("/welcome")
     result = fetch_customer_details.get_customer_details(session.get("customerEmail"))
-    return render_template("profile.html",result=result[0])
+    return render_template("profile.html", result=result[0])
 
 @app.route('/home/investment_option')
 def investment_option_fxn():
     if not session.get("customerEmail"):
         return redirect("/welcome")
     result = fetch_investment_options.get_investment_options_details()
-    return render_template('investment_options.html',result=result)
+    return render_template('investment_options.html', result=result)
 
 # @app.route('/home/<companyId>/<investmentOptionId>')
 # def company_investment_details_fxn(companyId,investmentOptionId):
@@ -110,7 +109,7 @@ def calculator_tools_fxn():
         return redirect("/welcome")
     result = fetch_calculator_tools.get_calculator_details()
 
-    return render_template('calculator_tools.html',result=result)
+    return render_template('calculator_tools.html', result=result)
 
 @app.route('/home/budget_tracking', methods=['GET', 'POST'])
 def budget_tracking_fxn():
@@ -127,14 +126,14 @@ def budget_tracking_fxn():
             # give a flash message of budget getting updated in the home page
 
             flash("Your budget has been successfully updated !!! 😇")
-            update_budget.update_budget_prg(session.get("customerEmail"),request.form.get("budgetCost"))
+            update_budget.update_budget_prg(session.get("customerEmail"), request.form.get("budgetCost"))
             return redirect(url_for("home_fxn"))
         else:
 
             totalExpense = fetch_total_expense_cost.get_total_expense_cost(session.get("customerEmail"))
             if int(request.form.get("budgetCost")) >= totalExpense:
                 flash("Your budget has been successfully updated !!! 😇")
-                update_budget.update_budget_prg(session.get("customerEmail"),request.form.get("budgetCost"))
+                update_budget.update_budget_prg(session.get("customerEmail"), request.form.get("budgetCost"))
                 return redirect(url_for("home_fxn"))
 
             else:
@@ -147,7 +146,7 @@ def budget_tracking_fxn():
 
 
     budget = fetch_budget.get_budget_details(session.get("customerEmail"))
-    return render_template("budget_tracking.html",budget=budget)
+    return render_template("budget_tracking.html", budget=budget)
 
 # @app.route("/home/edit_budget_tracking")
 # def edit_budget_fxn():
@@ -176,7 +175,7 @@ def view_expenses_fxn():
     totalExpense = fetch_total_expense_cost.get_total_expense_cost(session.get("customerEmail"))
     budget = fetch_budget.get_budget_details(session.get("customerEmail"))
     budgetBalance = budget-totalExpense
-    return render_template('view_expenses.html',result=result,totalExpense=totalExpense,budgetBalance=budgetBalance)
+    return render_template('view_expenses.html', result=result, totalExpense=totalExpense, budgetBalance=budgetBalance)
 
 @app.route("/home/expense_tracking/add_new_expenses",methods=['GET', 'POST'])
 def add_new_expenses_fxn():
@@ -206,7 +205,7 @@ def add_new_expenses_fxn():
                 return redirect(url_for('expense_tracking_fxn'))
 
             else:
-                insert_expense.insert_customer_expense(session.get("customerEmail"),request.form.get('expenseName'),request.form.get('expenseType'),request.form.get('expenseCost'))
+                insert_expense.insert_customer_expense(session.get("customerEmail"), request.form.get('expenseName'), request.form.get('expenseType'), request.form.get('expenseCost'))
                 #         flash message displaying that successfully inserted
                 flash("Expense has been successfully updated !!! 💵")
                 return redirect(url_for('expense_tracking_fxn'))
@@ -217,7 +216,7 @@ def add_new_expenses_fxn():
             return redirect(url_for('expense_tracking_fxn'))
 
         else:
-            insert_expense.insert_customer_expense(session.get("customerEmail"),request.form.get('expenseName'),request.form.get('expenseType'),request.form.get('expenseCost'))
+            insert_expense.insert_customer_expense(session.get("customerEmail"), request.form.get('expenseName'), request.form.get('expenseType'), request.form.get('expenseCost'))
     #         flash message displaying that successfully inserted
             flash("Expense has been successfully updated !!! 💵")
             return redirect(url_for('expense_tracking_fxn'))

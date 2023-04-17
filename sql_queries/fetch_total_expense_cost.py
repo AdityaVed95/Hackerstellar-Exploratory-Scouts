@@ -54,6 +54,8 @@ def get_total_expense_cost(customerEmail):
         # Fetch result
         total_cost = cursor.fetchone()[0]
 
+        print(total_cost)
+
         return total_cost
 
     except (Exception, psycopg2.Error) as error:
@@ -67,6 +69,9 @@ def get_total_expense_cost(customerEmail):
             print("PostgreSQL connection is closed")
 
 # Example usage
-total_cost = get_total_expense_cost('e1@gmail.com')
-print(total_cost)
+# total_cost = get_total_expense_cost('e1@gmail.com')
+# print(total_cost)
+
+if __name__ =="__main__":
+    get_total_expense_cost('e1@gmail.com')
 

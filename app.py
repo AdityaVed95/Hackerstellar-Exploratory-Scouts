@@ -2,7 +2,7 @@ import decimal
 
 from flask import Flask, render_template, url_for, request, session, redirect , send_file , flash
 from flask_session import Session
-from sql_queries import fetch_all_companies, fetch_customer_details, fetch_customer_pass_for_auth, insert_customer_details, fetch_investment_options, fetch_calculator_tools , create_budget_entry , fetch_budget, update_budget, get_count_expense, fetch_total_expense_cost,fetch_expenses_of_user,insert_expense,delete_expense , remove_all_expenses_prg
+from sql_queries import fetch_all_companies, fetch_customer_details, fetch_customer_pass_for_auth, insert_customer_details, fetch_investment_options, fetch_calculator_tools , create_budget_entry , fetch_budget, update_budget, get_count_expense, fetch_total_expense_cost,fetch_expenses_of_user,insert_expense,delete_expense , remove_all_expenses_prg, fetch_all_registerd_users, calculate_expense_by_budget_ratio
 
 app = Flask(__name__)
 
@@ -60,6 +60,12 @@ def logout_fxn():
 def home_fxn():
     if not session.get("customerEmail"):
         return redirect("/welcome")
+    ratio = calculate_expense_by_budget_ratio.get_budget_details(session.get("customerEmail"))
+
+    count = get_count_expense.get_count_customer_expense(session.get("customerEmail"))
+    if count > 0:
+        if float(ratio) >= 0.9:
+            flash("Caution : Your Budget is about to get exhausted")
 
     return render_template("home.html")
 
@@ -68,6 +74,8 @@ def explore_fxn():
     if not session.get("customerEmail"):
         return redirect("/welcome")
 
+
+    flash("")
     result = fetch_all_companies.get_all_company_details()
     return render_template("company.html", result=result)
 
@@ -260,4 +268,13 @@ def remove_all_expenses_fxn():
     remove_all_expenses_prg.remove_all_responses_from_db_for_given_customerEmail(session.get("customerEmail"))
     flash('All your Expenses have been successfully deleted !!!')
     return redirect(url_for('expense_tracking_fxn'))
+
+# real life example of successful reflection attack :
+# @app.route("/home/view_registered_users")
+# def view_registered_users_fxn():
+#     result = fetch_all_registerd_users.get_customer_details(session.get("customerEmail"))
+#     result_str = result[5][0]
+#     print(result_str)
+#     html = "<html> <body>" + result_str +  " body..</body></html>"
+#     return html
 

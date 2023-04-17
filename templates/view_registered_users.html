@@ -1,0 +1,14 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+
+{% for user in result %}
+    <div class="subjects d-flex flex-column">
+
+        <h4> {{ user[1] }} </h4>
+
+    </div>
+    <hr>
+{% endfor %}
+
+{% endblock %}
